@@ -54,9 +54,7 @@
     "prettier": "^2.4.1"
   },
   "lint-staged": {
-    "*.{*.js, *.jsx}": [
-      "npm run lint"
-    ],
+    "*.{js,jsx}": "eslint --cache --fix",
     "*.{js,css,md}": "prettier --write"
   }
 }
