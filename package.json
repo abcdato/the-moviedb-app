@@ -1,4 +1,5 @@
 {
+  "homepage": "http://abcdato.github.io/turbo-octo-spoon",
   "name": "movies-app",
   "version": "0.1.0",
   "private": true,
@@ -17,6 +18,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "lint": "eslint ./src --color",
     "lint:fix": "eslint ./src --fix --color",
     "prepare": "husky install"
@@ -49,6 +52,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "gh-pages": "^3.2.3",
     "husky": "^7.0.2",
     "lint-staged": "^11.2.3",
     "node-sass": "^6.0.1",
