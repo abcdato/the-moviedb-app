@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   &__poster {
-    width: 100%;
+    max-width: 100%;
     height: auto;
   }
   &__properties {
@@ -45,5 +45,7 @@
   &__overview {
     font-size: 12px;
     line-height: 22px;
+    max-height: 110px;
+    overflow: hidden;
   }
 }
