@@ -1,1 +1,1 @@
-jm movies db react app
+jm themoviedb react app
