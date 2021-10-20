@@ -1,3 +1,5 @@
+@import '~antd/dist/antd.css';
+
 body {
   font-family: 'Inter', sans-serif;
   background-color: #e5e5e5;
@@ -9,4 +11,18 @@ body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+.ant-spin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ant-alert {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
