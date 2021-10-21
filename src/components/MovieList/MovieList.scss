@@ -1,12 +1,13 @@
+.list {
+  // margin: 0 auto;
+  margin-bottom: 34px;
+  // padding: 0 36px;
+}
+
 .movie-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   align-content: start;
   grid-gap: 36px;
   grid-auto-flow: row;
-  margin: 0 auto;
-  padding: 20px 36px;
-  width: 1010px;
-  min-height: 100vh;
-  background-color: #fff;
 }

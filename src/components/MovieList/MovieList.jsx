@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Spin } from 'antd';
+import { Alert, Spin, Input, Pagination } from 'antd';
 import MovieCard from '../MovieCard/MovieCard';
 
 import MovieService from '../../api/MovieService';
@@ -7,15 +7,13 @@ import MovieService from '../../api/MovieService';
 import './MovieList.scss';
 
 class MovieList extends Component {
-  constructor() {
-    super();
+  movieService = new MovieService();
 
-    this.state = {
-      movies: [],
-      loading: true,
-      error: false,
-    };
-  }
+  state = {
+    movies: [],
+    loading: true,
+    error: false,
+  };
 
   componentDidMount() {
     this.loadData();
@@ -30,8 +28,7 @@ class MovieList extends Component {
 
   async loadData() {
     try {
-      const movieService = new MovieService();
-      const data = await movieService.getMovies('return');
+      const data = await this.movieService.getMovies('return');
 
       this.setState({
         movies: data,
@@ -63,15 +60,25 @@ class MovieList extends Component {
     const spinner = loading ? <Spin size="large" /> : null;
     const content = hasData ? this.showData(movies) : null;
     const errorMsg = error ? (
-      <Alert message="Error" description="Couldn't load the data." type="error" showIcon />
+      <Alert message="Error" description="Couldn't load the data." type="warning" showIcon />
     ) : null;
 
     return (
-      <ul className="movie-list">
-        {spinner}
-        {errorMsg}
-        {content}
-      </ul>
+      <>
+        <header className="header">
+          <Input placeholder="Type to search..." />
+        </header>
+        <main className="main">
+          <ul className="movie-list list">
+            {spinner}
+            {errorMsg}
+            {content}
+          </ul>
+        </main>
+        <footer className="footer">
+          <Pagination />
+        </footer>
+      </>
     );
   }
 }
