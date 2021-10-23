@@ -18,6 +18,7 @@ class MovieList extends Component {
     currentPage: 1,
     loading: true,
     error: false,
+    errorMessage: '',
   };
 
   debouncedLoadData = debounce(this.loadData, 750);
@@ -46,16 +47,15 @@ class MovieList extends Component {
     }
   }
 
-  onError = () => {
+  onError = (message) => {
     this.setState({
       loading: false,
       error: true,
+      errorMessage: message,
     });
   };
 
   onPageChange = (page) => {
-    console.log('onChange >>>', page);
-
     this.setState({ currentPage: page, loading: true });
   };
 
@@ -83,6 +83,15 @@ class MovieList extends Component {
     try {
       const data = await this.movieService.getMovies(movie, page);
 
+      if (data.movies.length === 0) {
+        this.setState({
+          loading: false,
+          error: true,
+          errorMessage: "Unfortunately we couldn't find any movies",
+        });
+        return;
+      }
+
       this.setState({
         movies: data.movies,
         totalPages: data.totalPages,
@@ -90,38 +99,29 @@ class MovieList extends Component {
         error: false,
       });
     } catch {
-      this.onError();
+      this.onError("Couldn't load the data.");
     }
   }
 
   showMovies(data) {
-    return (
-      data &&
-      data.map((movie) => {
-        const { id, title, releaseDate, overview, posterPath } = movie;
+    return data.map((movie) => {
+      const { id, title, releaseDate, overview, posterPath } = movie;
 
-        return (
-          <MovieCard key={id} title={title} releaseDate={releaseDate} overview={overview} posterPath={posterPath} />
-        );
-      })
-    );
+      return <MovieCard key={id} title={title} releaseDate={releaseDate} overview={overview} posterPath={posterPath} />;
+    });
   }
 
   render() {
     console.log('<<< render >>> ');
-    const { movies, totalPages, currentPage, loading, query, error } = this.state;
-
-    console.log('render totalPages', totalPages);
+    const { movies, totalPages, currentPage, loading, query, error, errorMessage } = this.state;
 
     const hasData = !(loading || error);
     const spinner = loading ? <Spin size="large" /> : null;
     const content = hasData ? this.showMovies(movies) : null;
 
-    const errorMsg = error ? (
-      <Alert message="Error" description="Couldn't load the data." type="warning" showIcon />
-    ) : null;
+    const errorMsg = error ? <Alert message="Error" description={errorMessage} type="warning" showIcon /> : null;
 
-    const pagination = !loading ? (
+    const pagination = hasData ? (
       <Pagination
         current={currentPage}
         pageSize={1}
