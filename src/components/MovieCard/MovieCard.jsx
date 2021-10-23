@@ -17,7 +17,7 @@ const MovieCard = ({ title, releaseDate, overview, posterPath }) => {
 
   const date = releaseDate ? format(new Date(releaseDate), 'MMMM Q, y') : null;
   const posterUrl = `https://image.tmdb.org/t/p/w200/${posterPath}`;
-  const posterImg = <img className="card__poster" src={posterUrl} alt="movies poster" />;
+  const posterImg = <img className="card__poster" src={posterUrl} alt="movie poster" />;
   const text = overview ? truncate(overview, 160, true) : null;
   const empty = <Empty description="Image Not Found" />;
 
@@ -39,11 +39,12 @@ const MovieCard = ({ title, releaseDate, overview, posterPath }) => {
 
 MovieCard.defaultProps = {
   posterPath: '',
+  releaseDate: '',
 };
 
 MovieCard.propTypes = {
   title: PropTypes.string.isRequired,
-  releaseDate: PropTypes.string.isRequired,
+  releaseDate: PropTypes.string,
   overview: PropTypes.string.isRequired,
   posterPath: PropTypes.string,
 };
