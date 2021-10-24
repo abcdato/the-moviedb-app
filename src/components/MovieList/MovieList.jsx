@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { Component } from 'react';
 import { Alert, Spin, Input, Pagination } from 'antd';
 import debounce from 'lodash.debounce';
@@ -13,36 +12,25 @@ class MovieList extends Component {
 
   state = {
     movies: [],
-    totalPages: 0,
-    query: 'return',
-    currentPage: 1,
-    loading: true,
+    totalPages: null,
+    query: '',
+    currentPage: null,
+    loading: false,
     error: false,
-    errorMessage: '',
+    errorMessage: null,
   };
 
   debouncedLoadData = debounce(this.loadData, 750);
 
-  componentDidMount() {
-    const { query, currentPage } = this.state;
-
-    console.log('componentDidMount >>>', 'query:', query, 'currentPage:', currentPage);
-
-    this.loadData(query, currentPage);
-  }
+  // componentDidMount() {
+  //   const { query, currentPage } = this.state;
+  //   this.loadData(query, currentPage);
+  // }
 
   componentDidUpdate(prevProps, prevState) {
     const { query, currentPage } = this.state;
 
     if (currentPage !== prevState.currentPage) {
-      console.log(
-        'componentDidUpdate >>>',
-        'currentPage:',
-        currentPage,
-        'prevState.currentPage:',
-        prevState.currentPage
-      );
-
       this.loadData(query, currentPage);
     }
   }
@@ -60,13 +48,16 @@ class MovieList extends Component {
   };
 
   searchMovie = (event) => {
-    console.log('event.target.value >>>', event.target.value);
-
     if (event.target.value === '') {
+      console.log('value NULL');
+
       this.setState({
+        movies: [],
         query: '',
         loading: false,
       });
+      // eslint-disable-next-line react/destructuring-assignment
+      console.log(this.state.movies);
       return;
     }
 
@@ -85,6 +76,7 @@ class MovieList extends Component {
 
       if (data.movies.length === 0) {
         this.setState({
+          movies: [],
           loading: false,
           error: true,
           errorMessage: "Unfortunately we couldn't find any movies",
@@ -104,18 +96,22 @@ class MovieList extends Component {
   }
 
   showMovies(data) {
-    return data.map((movie) => {
-      const { id, title, releaseDate, overview, posterPath } = movie;
+    return (
+      data &&
+      data.map((movie) => {
+        const { id, title, releaseDate, overview, posterPath } = movie;
 
-      return <MovieCard key={id} title={title} releaseDate={releaseDate} overview={overview} posterPath={posterPath} />;
-    });
+        return (
+          <MovieCard key={id} title={title} releaseDate={releaseDate} overview={overview} posterPath={posterPath} />
+        );
+      })
+    );
   }
 
   render() {
-    console.log('<<< render >>> ');
     const { movies, totalPages, currentPage, loading, query, error, errorMessage } = this.state;
 
-    const hasData = !(loading || error);
+    const hasData = !(loading || error) && movies.length !== 0;
     const spinner = loading ? <Spin size="large" /> : null;
     const content = hasData ? this.showMovies(movies) : null;
 
