@@ -1,9 +1,15 @@
 @import '~antd/dist/antd.css';
 
+@font-face {
+  font-family: 'Inter';
+  src: local('Inter'), url('../../fonts/Inter/Inter-Regular.woff2');
+  font-weight: regular;
+}
+
 body {
   display: flex;
   justify-content: center;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', serif;
   background-color: #e5e5e5;
 }
 

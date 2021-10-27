@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { Component } from 'react';
 import { Alert, Spin, Input, Pagination } from 'antd';
 import debounce from 'lodash.debounce';
@@ -14,18 +15,13 @@ class MovieList extends Component {
     movies: [],
     totalPages: null,
     query: '',
-    currentPage: null,
+    currentPage: 1,
     loading: false,
     error: false,
-    errorMessage: null,
+    errorMessage: '',
   };
 
   debouncedLoadData = debounce(this.loadData, 750);
-
-  // componentDidMount() {
-  //   const { query, currentPage } = this.state;
-  //   this.loadData(query, currentPage);
-  // }
 
   componentDidUpdate(prevProps, prevState) {
     const { query, currentPage } = this.state;
@@ -36,76 +32,66 @@ class MovieList extends Component {
   }
 
   onError = (message) => {
-    this.setState({
+    this.setState(() => ({
       loading: false,
       error: true,
       errorMessage: message,
-    });
+    }));
   };
 
   onPageChange = (page) => {
-    this.setState({ currentPage: page, loading: true });
+    this.setState(() => ({
+      currentPage: page,
+      loading: true,
+    }));
   };
 
-  searchMovie = (event) => {
-    if (event.target.value === '') {
-      console.log('value NULL');
+  onInputChange = (event) => {
+    this.setState(
+      () => ({
+        query: event.target.value,
+        currentPage: 1,
+        loading: true,
+      }),
+      () => {
+        const { query } = this.state;
+        this.debouncedLoadData(query.trim());
+      }
+    );
+  };
 
-      this.setState({
-        movies: [],
-        query: '',
-        loading: false,
-      });
-      // eslint-disable-next-line react/destructuring-assignment
-      console.log(this.state.movies);
-      return;
-    }
+  showMovies = (data) =>
+    data &&
+    data.map((movie) => {
+      const { id, title, releaseDate, overview, posterPath } = movie;
 
-    this.setState({
-      query: event.target.value,
-      currentPage: 1,
-      loading: true,
+      return <MovieCard key={id} title={title} releaseDate={releaseDate} overview={overview} posterPath={posterPath} />;
     });
 
-    this.debouncedLoadData(event.target.value);
-  };
-
-  async loadData(movie, page) {
+  async loadData(movie, page = 1) {
     try {
       const data = await this.movieService.getMovies(movie, page);
+      console.log('data', data);
 
-      if (data.movies.length === 0) {
-        this.setState({
+      if (movie && !data.totalResults) {
+        this.onError("Unfortunately we couldn't find any movies");
+      } else if (movie && data.totalResults) {
+        this.setState(() => ({
+          movies: data.movies,
+          totalPages: data.totalPages,
+          loading: false,
+          error: false,
+        }));
+      } else if (!data) {
+        this.setState(() => ({
           movies: [],
           loading: false,
-          error: true,
-          errorMessage: "Unfortunately we couldn't find any movies",
-        });
-        return;
+          error: false,
+        }));
       }
-
-      this.setState({
-        movies: data.movies,
-        totalPages: data.totalPages,
-        loading: false,
-        error: false,
-      });
     } catch {
       this.onError("Couldn't load the data.");
     }
-  }
-
-  showMovies(data) {
-    return (
-      data &&
-      data.map((movie) => {
-        const { id, title, releaseDate, overview, posterPath } = movie;
-
-        return (
-          <MovieCard key={id} title={title} releaseDate={releaseDate} overview={overview} posterPath={posterPath} />
-        );
-      })
-    );
   }
 
   render() {
@@ -114,7 +100,6 @@ class MovieList extends Component {
     const hasData = !(loading || error) && movies.length !== 0;
     const spinner = loading ? <Spin size="large" /> : null;
     const content = hasData ? this.showMovies(movies) : null;
-
     const errorMsg = error ? <Alert message="Error" description={errorMessage} type="warning" showIcon /> : null;
 
     const pagination = hasData ? (
@@ -130,7 +115,7 @@ class MovieList extends Component {
     return (
       <>
         <header className="header">
-          <Input placeholder="Type to search..." value={query} onChange={this.searchMovie} />
+          <Input placeholder="Type to search..." value={query} onChange={this.onInputChange} />
         </header>
         <main className="main">
           <ul className="movie-list list">

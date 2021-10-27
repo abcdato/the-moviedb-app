@@ -11,13 +11,18 @@ class MoviesAPI {
     return data;
   };
 
+  // eslint-disable-next-line consistent-return
   getMovies = async (query, page) => {
     try {
-      const data = await this.getData(`&query=${query}&page=${page}`);
-      const movies = this.tranformData(data);
-      const totalPages = data.total_pages;
+      if (query) {
+        const data = await this.getData(`&query=${query}&page=${page}`);
+        const movies = this.tranformData(data);
+        const totalPages = data.total_pages;
+        const totalResults = data.total_results;
 
-      return { movies, totalPages };
+        return { movies, totalPages, totalResults };
+      }
+      // return false;
     } catch (error) {
       throw new Error(error);
     }
