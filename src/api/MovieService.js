@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 class MoviesAPI {
   key = '1be9a44c716204acb901eac3dee95b08';
 
@@ -11,7 +10,6 @@ class MoviesAPI {
     return data;
   };
 
-  // eslint-disable-next-line consistent-return
   getMovies = async (query, page) => {
     try {
       if (query) {
@@ -22,7 +20,7 @@ class MoviesAPI {
 
         return { movies, totalPages, totalResults };
       }
-      // return false;
+      return false;
     } catch (error) {
       throw new Error(error);
     }

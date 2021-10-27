@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { Component } from 'react';
 import { Alert, Spin, Input, Pagination } from 'antd';
 import debounce from 'lodash.debounce';
@@ -71,7 +70,6 @@ class MovieList extends Component {
   async loadData(movie, page = 1) {
     try {
       const data = await this.movieService.getMovies(movie, page);
-      console.log('data', data);
 
       if (movie && !data.totalResults) {
         this.onError("Unfortunately we couldn't find any movies");
