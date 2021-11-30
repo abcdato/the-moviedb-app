@@ -2,7 +2,7 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
-import { Empty } from 'antd';
+import { Empty, Rate } from 'antd';
 
 import './MovieCard.scss';
 
@@ -18,7 +18,7 @@ const MovieCard = ({ title, releaseDate, overview, posterPath }) => {
   const date = releaseDate ? format(new Date(releaseDate), 'MMMM Q, y') : null;
   const posterUrl = `https://image.tmdb.org/t/p/w200/${posterPath}`;
   const posterImg = <img className="card__poster" src={posterUrl} alt="movie poster" />;
-  const text = overview ? truncate(overview, 160, true) : null;
+  const text = overview ? truncate(overview, 140, true) : null;
   const empty = <Empty description="Image Not Found" />;
 
   return (
@@ -32,6 +32,7 @@ const MovieCard = ({ title, releaseDate, overview, posterPath }) => {
           <div className="card__genre">drama</div>
         </div>
         <p className="card__overview">{text}</p>
+        <Rate allowHalf count={10} />
       </div>
     </li>
   );

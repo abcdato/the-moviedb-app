@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Spin, Input, Pagination } from 'antd';
+import { Alert, Input, Pagination, Spin, Tabs } from 'antd';
 import debounce from 'lodash.debounce';
 import MovieCard from '../MovieCard/MovieCard';
 
@@ -110,20 +110,27 @@ class MovieList extends Component {
       />
     ) : null;
 
+    const { TabPane } = Tabs;
+
     return (
-      <>
-        <header className="header">
-          <Input placeholder="Type to search..." value={query} onChange={this.onInputChange} />
-        </header>
-        <main className="main">
-          <ul className="movie-list list">
-            {spinner}
-            {errorMsg}
-            {content}
-          </ul>
-        </main>
-        <footer className="footer">{pagination}</footer>
-      </>
+      <Tabs centered defaultActiveKey="search">
+        <TabPane tab="Search" key="search">
+          <header className="header">
+            <Input placeholder="Type to search..." value={query} onChange={this.onInputChange} />
+          </header>
+          <main className="main">
+            <ul className="movie-list list">
+              {spinner}
+              {errorMsg}
+              {content}
+            </ul>
+          </main>
+          <footer className="footer">{pagination}</footer>
+        </TabPane>
+        <TabPane tab="Rated" key="rated">
+          <h1>Hello</h1>
+        </TabPane>
+      </Tabs>
     );
   }
 }
