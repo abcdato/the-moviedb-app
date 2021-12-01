@@ -1,19 +1,20 @@
 class MoviesAPI {
   key = '1be9a44c716204acb901eac3dee95b08';
 
-  url = 'https://api.themoviedb.org/3/search/movie';
+  url = 'https://api.themoviedb.org/3/';
 
-  getData = async (url) => {
-    const res = await fetch(`${this.url}?api_key=${this.key}${url}`);
-    const data = await res.json();
+  // getData = async (value) => {
+  //   const res = await fetch(`${this.url}?api_key=${this.key}${value}`);
+  //   const data = await res.json();
 
-    return data;
-  };
+  //   return data;
+  // };
 
   getMovies = async (query, page) => {
     try {
       if (query) {
-        const data = await this.getData(`&query=${query}&page=${page}`);
+        const res = await fetch(`${this.url}search/movie?api_key=${this.key}&query=${query}&page=${page}`);
+        const data = await res.json();
         const movies = this.tranformData(data);
         const totalPages = data.total_pages;
         const totalResults = data.total_results;
@@ -26,6 +27,13 @@ class MoviesAPI {
     }
   };
 
+  getGenres = async () => {
+    const res = await fetch(`${this.url}genre/movie/list?api_key=${this.key}`);
+    const data = await res.json();
+
+    return data;
+  };
+
   tranformData = (data) =>
     data.results.map((item) => ({
       id: item.id,
@@ -33,7 +41,7 @@ class MoviesAPI {
       releaseDate: item.release_date,
       overview: item.overview,
       posterPath: item.poster_path,
+      genreIds: item.genre_ids,
     }));
 }
-
 export default MoviesAPI;

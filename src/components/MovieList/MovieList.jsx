@@ -12,6 +12,7 @@ class MovieList extends Component {
 
   state = {
     movies: [],
+    genreList: [],
     totalPages: null,
     query: '',
     currentPage: 1,
@@ -22,12 +23,25 @@ class MovieList extends Component {
 
   debouncedLoadData = debounce(this.loadData, 750);
 
+  componentDidMount() {
+    this.getGenreName();
+  }
+
   componentDidUpdate(prevProps, prevState) {
     const { query, currentPage } = this.state;
 
     if (currentPage !== prevState.currentPage) {
       this.loadData(query, currentPage);
     }
+  }
+
+  async getGenreName() {
+    const allGenres = this.movieService.getGenres();
+    const genreList = await allGenres;
+
+    this.setState(() => ({
+      genreList: genreList.genres,
+    }));
   }
 
   onError = (message) => {
@@ -59,13 +73,28 @@ class MovieList extends Component {
     );
   };
 
-  showMovies = (data) =>
-    data &&
-    data.map((movie) => {
-      const { id, title, releaseDate, overview, posterPath } = movie;
+  showMovies(data) {
+    const { genreList } = this.state;
 
-      return <MovieCard key={id} title={title} releaseDate={releaseDate} overview={overview} posterPath={posterPath} />;
-    });
+    return (
+      data &&
+      data.map((movie) => {
+        const { id, title, releaseDate, overview, posterPath, genreIds } = movie;
+
+        return (
+          <MovieCard
+            key={id}
+            title={title}
+            releaseDate={releaseDate}
+            overview={overview}
+            posterPath={posterPath}
+            genreIds={genreIds}
+            genreList={genreList}
+          />
+        );
+      })
+    );
+  }
 
   async loadData(movie, page = 1) {
     try {
