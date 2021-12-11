@@ -39,6 +39,11 @@ body {
   flex-grow: 1;
 }
 
+.footer {
+  display: flex;
+  justify-content: center;
+}
+
 .ant-spin {
   position: absolute;
   top: 50%;
@@ -55,11 +60,35 @@ body {
 
 .ant-input {
   height: 40px;
-  margin: 34px 0;
+  margin-bottom: 34px;
   font-size: 16px;
   line-height: 22px;
 }
 
 .ant-pagination {
   margin-bottom: 17px;
+}
+
+.ant-rate {
+  align-self: center;
+  margin-top: auto;
+}
+
+.ant-rate-star:not(:last-child) {
+  margin-right: 6px;
+}
+
+.ant-rate-star {
+  font-size: 17px;
+}
+
+.ant-empty {
+  margin: 0;
+}
+
+.ant-tag {
+  margin-right: 6px;
+  padding: 0px 4px;
+  font-size: 10px;
+  line-height: 18px;
 }

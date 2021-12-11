@@ -19,6 +19,8 @@
     height: 280px;
   }
   &__properties {
+    display: flex;
+    flex-direction: column;
     padding: 10px 20px;
     width: 100%;
   }
@@ -50,6 +52,7 @@
     text-transform: capitalize;
   }
   &__overview {
+    margin-bottom: 0;
     font-size: 12px;
     line-height: 22px;
     max-height: 110px;

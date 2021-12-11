@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Spin, Input, Pagination } from 'antd';
+import { Alert, Input, Pagination, Spin, Tabs } from 'antd';
 import debounce from 'lodash.debounce';
 import MovieCard from '../MovieCard/MovieCard';
 
@@ -12,6 +12,7 @@ class MovieList extends Component {
 
   state = {
     movies: [],
+    genreList: [],
     totalPages: null,
     query: '',
     currentPage: 1,
@@ -22,12 +23,25 @@ class MovieList extends Component {
 
   debouncedLoadData = debounce(this.loadData, 750);
 
+  componentDidMount() {
+    this.getGenreName();
+  }
+
   componentDidUpdate(prevProps, prevState) {
     const { query, currentPage } = this.state;
 
     if (currentPage !== prevState.currentPage) {
       this.loadData(query, currentPage);
     }
+  }
+
+  async getGenreName() {
+    const allGenres = this.movieService.getGenres();
+    const genreList = await allGenres;
+
+    this.setState(() => ({
+      genreList: genreList.genres,
+    }));
   }
 
   onError = (message) => {
@@ -59,13 +73,28 @@ class MovieList extends Component {
     );
   };
 
-  showMovies = (data) =>
-    data &&
-    data.map((movie) => {
-      const { id, title, releaseDate, overview, posterPath } = movie;
+  showMovies(data) {
+    const { genreList } = this.state;
 
-      return <MovieCard key={id} title={title} releaseDate={releaseDate} overview={overview} posterPath={posterPath} />;
-    });
+    return (
+      data &&
+      data.map((movie) => {
+        const { id, title, releaseDate, overview, posterPath, genreIds } = movie;
+
+        return (
+          <MovieCard
+            key={id}
+            title={title}
+            releaseDate={releaseDate}
+            overview={overview}
+            posterPath={posterPath}
+            genreIds={genreIds}
+            genreList={genreList}
+          />
+        );
+      })
+    );
+  }
 
   async loadData(movie, page = 1) {
     try {
@@ -110,20 +139,27 @@ class MovieList extends Component {
       />
     ) : null;
 
+    const { TabPane } = Tabs;
+
     return (
-      <>
-        <header className="header">
-          <Input placeholder="Type to search..." value={query} onChange={this.onInputChange} />
-        </header>
-        <main className="main">
-          <ul className="movie-list list">
-            {spinner}
-            {errorMsg}
-            {content}
-          </ul>
-        </main>
-        <footer className="footer">{pagination}</footer>
-      </>
+      <Tabs centered defaultActiveKey="search">
+        <TabPane tab="Search" key="search">
+          <header className="header">
+            <Input placeholder="Type to search..." value={query} onChange={this.onInputChange} />
+          </header>
+          <main className="main">
+            <ul className="movie-list list">
+              {spinner}
+              {errorMsg}
+              {content}
+            </ul>
+          </main>
+          <footer className="footer">{pagination}</footer>
+        </TabPane>
+        <TabPane tab="Rated" key="rated">
+          <h1>Hello</h1>
+        </TabPane>
+      </Tabs>
     );
   }
 }
