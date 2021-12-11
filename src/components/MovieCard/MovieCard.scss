@@ -2,18 +2,33 @@
   width: 450px;
   height: 280px;
   background-color: #fff;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  transition-property: box-shadow, transition;
+  transition: 0.15s ease-in;
+  overflow: hidden;
+
+  &:hover {
+    box-shadow: 0px 6px 14px rgba(0, 0, 0, 0.2);
+    transition-property: box-shadow;
+    transition: 0.15s ease-in;
+  }
 }
 
 .card {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  &__poster-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   &__poster {
-    max-width: 100%;
-    height: auto;
+    width: 185px;
+    height: 280px;
   }
   &__properties {
     padding: 10px 20px;
+    width: 100%;
   }
   &__title {
     margin-bottom: 7px;
