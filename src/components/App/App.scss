@@ -1,7 +1,15 @@
 @import '~antd/dist/antd.css';
 
+@font-face {
+  font-family: 'Inter';
+  src: local('Inter'), url('../../fonts/Inter/Inter-Regular.woff2');
+  font-weight: regular;
+}
+
 body {
-  font-family: 'Inter', sans-serif;
+  display: flex;
+  justify-content: center;
+  font-family: 'Inter', serif;
   background-color: #e5e5e5;
 }
 
@@ -11,6 +19,24 @@ body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+.app {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  background-color: #fff;
+  width: 1010px;
+  min-height: 100vh;
+}
+
+.header {
+  width: 938px;
+}
+
+.main {
+  flex-grow: 1;
 }
 
 .ant-spin {
@@ -25,4 +51,15 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.ant-input {
+  height: 40px;
+  margin: 34px 0;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.ant-pagination {
+  margin-bottom: 17px;
 }
