@@ -129,15 +129,16 @@ class MovieList extends Component {
     const content = hasData ? this.showMovies(movies) : null;
     const errorMsg = error ? <Alert message="Error" description={errorMessage} type="warning" showIcon /> : null;
 
-    const pagination = hasData ? (
-      <Pagination
-        current={currentPage}
-        pageSize={1}
-        showSizeChanger={false}
-        onChange={this.onPageChange}
-        total={totalPages}
-      />
-    ) : null;
+    const pagination =
+      hasData && totalPages > 1 ? (
+        <Pagination
+          current={currentPage}
+          pageSize={1}
+          showSizeChanger={false}
+          onChange={this.onPageChange}
+          total={totalPages}
+        />
+      ) : null;
 
     const { TabPane } = Tabs;
 
@@ -157,7 +158,14 @@ class MovieList extends Component {
           <footer className="footer">{pagination}</footer>
         </TabPane>
         <TabPane tab="Rated" key="rated">
-          <h1>Hello</h1>
+          <main className="main">
+            <ul className="movie-list list">
+              {spinner}
+              {errorMsg}
+              {content}
+            </ul>
+          </main>
+          <footer className="footer">{pagination}</footer>
         </TabPane>
       </Tabs>
     );
