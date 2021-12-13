@@ -28,6 +28,7 @@
     margin-bottom: 7px;
     font-size: 20px;
     line-height: 28px;
+    max-width: 200px;
   }
   &__release-date {
     display: block;
@@ -58,4 +59,19 @@
     max-height: 110px;
     overflow: hidden;
   }
+  // &__rating {
+  //   position: absolute;
+  //   width: 30px;
+  //   height: 30px;
+  //   right: 9px;
+  //   top: 12px;
+  //   border: 2px solid ;
+  //   border-radius: 50%;
+  //   font-size: 12px;
+  //   line-height: 22px;
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   color: #000000;
+  // }
 }
