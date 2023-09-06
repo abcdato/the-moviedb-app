@@ -1,4 +1,5 @@
-@import '~antd/dist/antd.css';
+@import 'antd/dist/reset.css';
+
 
 @font-face {
   font-family: 'Inter';
@@ -47,14 +48,14 @@ body {
 
 .ant-spin {
   position: absolute;
-  top: 50%;
+  top: 150%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
 .ant-alert {
   position: absolute;
-  top: 50%;
+  top: 150%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -75,15 +76,20 @@ body {
   margin-top: auto;
 }
 
-.ant-rate-star:not(:last-child) {
-  margin-right: 6px;
+.ant-rate .ant-rate-star:not(:last-child) {
+  margin-inline-end: 6px;
 }
 
 .ant-rate-star {
-  font-size: 17px;
+  font-size: 18px;
 }
 
 .ant-empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 280px; 
+  width: 185px;
   margin: 0;
 }
 

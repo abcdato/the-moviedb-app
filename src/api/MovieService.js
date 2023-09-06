@@ -13,7 +13,9 @@ class MoviesAPI {
   getMovies = async (query, page) => {
     try {
       if (query) {
-        const res = await fetch(`${this.url}search/movie?api_key=${this.key}&query=${query}&page=${page}`);
+        const res = await fetch(
+          `${this.url}search/movie?api_key=${this.key}&query=${query}&page=${page}`,
+        );
         const data = await res.json();
         const movies = this.tranformData(data);
         const totalPages = data.total_pages;
@@ -34,6 +36,7 @@ class MoviesAPI {
     return data;
   };
 
+  // eslint-disable-next-line class-methods-use-this
   tranformData = (data) =>
     data.results.map((item) => ({
       id: item.id,

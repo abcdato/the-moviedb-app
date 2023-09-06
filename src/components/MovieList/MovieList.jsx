@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { Alert, Input, Pagination, Spin, Tabs } from 'antd';
 import debounce from 'lodash.debounce';
 import MovieCard from '../MovieCard/MovieCard';
@@ -10,6 +10,7 @@ import './MovieList.scss';
 class MovieList extends Component {
   movieService = new MovieService();
 
+  // eslint-disable-next-line react/state-in-constructor
   state = {
     movies: [],
     genreList: [],
@@ -69,7 +70,7 @@ class MovieList extends Component {
       () => {
         const { query } = this.state;
         this.debouncedLoadData(query.trim());
-      }
+      },
     );
   };
 
@@ -79,7 +80,8 @@ class MovieList extends Component {
     return (
       data &&
       data.map((movie) => {
-        const { id, title, releaseDate, overview, posterPath, genreIds } = movie;
+        const { id, title, releaseDate, overview, posterPath, genreIds } =
+          movie;
 
         return (
           <MovieCard
@@ -122,12 +124,27 @@ class MovieList extends Component {
   }
 
   render() {
-    const { movies, totalPages, currentPage, loading, query, error, errorMessage } = this.state;
+    const {
+      movies,
+      totalPages,
+      currentPage,
+      loading,
+      query,
+      error,
+      errorMessage,
+    } = this.state;
 
     const hasData = !(loading || error) && movies.length !== 0;
     const spinner = loading ? <Spin size="large" /> : null;
     const content = hasData ? this.showMovies(movies) : null;
-    const errorMsg = error ? <Alert message="Error" description={errorMessage} type="warning" showIcon /> : null;
+    const errorMsg = error ? (
+      <Alert
+        message="Error"
+        description={errorMessage}
+        type="warning"
+        showIcon
+      />
+    ) : null;
 
     const pagination =
       hasData && totalPages > 1 ? (
@@ -140,35 +157,48 @@ class MovieList extends Component {
         />
       ) : null;
 
-    const { TabPane } = Tabs;
+    const items = [
+      {
+        key: '1',
+        label: 'Search',
+        children: (
+          <>
+            <header className="header">
+              <Input
+                placeholder="Type to search..."
+                value={query}
+                onChange={this.onInputChange}
+              />
+            </header>
+            <main className="main">
+              <ul className="movie-list list">
+                {spinner}
+                {errorMsg}
+                {content}
+              </ul>
+            </main>
+            <footer className="footer">{pagination}</footer>
+          </>
+        ),
+      },
+      {
+        key: '2',
+        label: 'Rated',
+        // children: (
+        // <main className="main">
+        //   <ul className="movie-list list">
+        //     {spinner}
+        //     {errorMsg}
+        //     {content}
+        //   </ul>
+        // </main>
+        // <footer className="footer">{pagination}</footer>
 
-    return (
-      <Tabs centered defaultActiveKey="search">
-        <TabPane tab="Search" key="search">
-          <header className="header">
-            <Input placeholder="Type to search..." value={query} onChange={this.onInputChange} />
-          </header>
-          <main className="main">
-            <ul className="movie-list list">
-              {spinner}
-              {errorMsg}
-              {content}
-            </ul>
-          </main>
-          <footer className="footer">{pagination}</footer>
-        </TabPane>
-        <TabPane tab="Rated" key="rated">
-          <main className="main">
-            <ul className="movie-list list">
-              {spinner}
-              {errorMsg}
-              {content}
-            </ul>
-          </main>
-          <footer className="footer">{pagination}</footer>
-        </TabPane>
-      </Tabs>
-    );
+        // ),
+      },
+    ];
+
+    return <Tabs centered defaultActiveKey="1" items={items} />;
   }
 }
 

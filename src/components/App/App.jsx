@@ -1,4 +1,3 @@
-import React from 'react';
 import MovieList from '../MovieList/MovieList';
 
 import './App.scss';
