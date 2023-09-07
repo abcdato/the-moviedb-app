@@ -3,13 +3,6 @@ class MoviesAPI {
 
   url = 'https://api.themoviedb.org/3/';
 
-  // getData = async (value) => {
-  //   const res = await fetch(`${this.url}?api_key=${this.key}${value}`);
-  //   const data = await res.json();
-
-  //   return data;
-  // };
-
   getMovies = async (query, page) => {
     try {
       if (query) {

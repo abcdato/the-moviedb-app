@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Alert, Input, Pagination, Tabs, Spin } from 'antd';
-import { useDebounce } from '../../utils/useDebounce';
+import { useDebounce } from '../../hooks/useDebounce';
 
 import MovieCard from '../MovieCard/MovieCard';
 import MovieService from '../../api/MovieService';

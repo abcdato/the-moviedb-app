@@ -30,7 +30,14 @@ function MovieCard({
     : null;
   const posterUrl = `https://image.tmdb.org/t/p/w200/${posterPath}`;
   const posterImg = (
-    <img className="card__poster" src={posterUrl} alt="movie poster" />
+    <img
+      className="card__poster"
+      src={posterUrl}
+      alt="movie poster"
+      loading="lazy"
+      height="280"
+      width="185"
+    />
   );
   const text = overview ? truncate(overview, 140, true) : null;
   const empty = <Empty description="Image Not Found" />;
@@ -38,7 +45,7 @@ function MovieCard({
   return (
     <li className="movie-card card">
       <div className="card__poster-wrapper">
-        {posterPath ? posterImg : empty}
+        {posterUrl ? posterImg : empty}
       </div>
       <div className="card__properties">
         <h3 className="card__title">{title}</h3>
