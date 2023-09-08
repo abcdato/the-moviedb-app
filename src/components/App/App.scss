@@ -71,6 +71,15 @@ body {
   margin-bottom: 17px;
 }
 
+.ant-pagination .ant-pagination-item-active a {
+  color: white;
+  background-color: #1677ff;
+}
+
+.ant-pagination .ant-pagination-item-active a:hover {
+  color: white;
+}
+
 .ant-rate {
   align-self: center;
   margin-top: auto;
