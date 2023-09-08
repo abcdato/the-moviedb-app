@@ -12,6 +12,7 @@ function MovieCard({
   posterPath,
   genreIds,
   genreList,
+  vote,
 }) {
   const truncate = (str, num, useWordBoundary) => {
     if (str.length <= num) {
@@ -40,6 +41,7 @@ function MovieCard({
     />
   );
   const text = overview ? truncate(overview, 140, true) : null;
+  const voteFixed = vote ? vote.toFixed(1) : null;
   const empty = <Empty description="Image Not Found" />;
 
   return (
@@ -49,6 +51,7 @@ function MovieCard({
       </div>
       <div className="card__properties">
         <h3 className="card__title">{title}</h3>
+        {voteFixed ? <div className="card__rating">{voteFixed}</div> : null}
         <div className="card__release-date">{date}</div>
         <div className="card__genres">
           {genreIds ? (
@@ -63,6 +66,7 @@ function MovieCard({
 }
 
 MovieCard.defaultProps = {
+  vote: null,
   posterPath: '',
   releaseDate: '',
   genreIds: [],
@@ -72,6 +76,7 @@ MovieCard.defaultProps = {
 MovieCard.propTypes = {
   title: PropTypes.string.isRequired,
   releaseDate: PropTypes.string,
+  vote: PropTypes.number,
   overview: PropTypes.string.isRequired,
   posterPath: PropTypes.string,
   genreIds: PropTypes.instanceOf(Array),

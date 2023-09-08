@@ -62,7 +62,8 @@ function MovieList() {
   const showMovies = (data) =>
     data &&
     data.map((movie) => {
-      const { id, title, releaseDate, overview, posterPath, genreIds } = movie;
+      const { id, title, releaseDate, overview, posterPath, genreIds, vote } =
+        movie;
 
       return (
         <MovieCard
@@ -73,6 +74,7 @@ function MovieList() {
           posterPath={posterPath}
           genreIds={genreIds}
           genreList={genreList}
+          vote={vote}
         />
       );
     });
