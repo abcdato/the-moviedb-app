@@ -34,6 +34,7 @@ body {
 
 .header {
   width: 938px;
+  margin-bottom: 34px;
 }
 
 .main {
@@ -62,7 +63,7 @@ body {
 
 .ant-input {
   height: 40px;
-  margin-bottom: 34px;
+  // margin-bottom: 34px;
   font-size: 16px;
   line-height: 22px;
 }
@@ -107,4 +108,30 @@ body {
   padding: 0px 4px;
   font-size: 10px;
   line-height: 18px;
+}
+
+@media (max-width: 1120px) {
+  .app {
+    width: 420px;
+    min-height: 100vh;
+  }
+
+  .header {
+    width: 388px;
+    margin-bottom: 10px;
+  }
+
+  .ant-rate {
+    align-self: end;
+    margin-top: auto;
+  }
+
+  .ant-empty {
+    height: 90px; 
+    width: 60px;
+  }
+
+  .ant-empty-description {
+    font-size: 8px;
+  }
 }

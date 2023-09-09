@@ -2,16 +2,16 @@
   width: 450px;
   height: 280px;
   background-color: #fff;
-  box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px;
+  box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   transition: box-shadow 300ms ease-in-out;
-
 }
 .movie-card:hover {
-  box-shadow: rgba(0, 0, 0, 0.08) 0px 8px 10px 2px; 
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.15);
 }
 
 .card {
+  position: relative;
   display: flex;
   justify-content: space-between;
   border-radius: 6px;
@@ -25,15 +25,10 @@
     height: 280px;
   }
   &__properties {
-    position: relative;
     display: flex;
     flex-direction: column;
     padding: 6px 14px;
     width: 100%;
-    // &-wrapper {
-    //   display: flex;
-    //   justify-content: space-between;
-    // }
   }
   &__title {
     margin-bottom: 6px;
@@ -88,6 +83,40 @@
       border: 2px solid ;
       border-radius: 50%;
       border-color: #E9D100;
+    }
+  }
+}
+
+@media (max-width: 1120px) {
+  .movie-card {
+    width: 388px;
+    height: 245px;
+  }
+
+  .card {
+    display: flex;
+    padding: 6px 10px;
+    flex-direction: row;
+    &__poster-wrapper {
+      display: flex;
+      align-items: start;
+    }
+    &__poster {
+      width: 60px;
+      height: 90px;
+    }
+    &__release-date {
+      margin-bottom: 2px;
+      font-size: 12px;
+    }
+    &__title {
+      margin-bottom: 2px;
+      font-size: 16px;
+      line-height: 20px;
+      max-width: 260px;
+    }
+    &__overview {
+      line-height: 20px;
     }
   }
 }

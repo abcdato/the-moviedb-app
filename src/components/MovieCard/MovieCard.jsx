@@ -47,7 +47,7 @@ function MovieCard({
   return (
     <li className="movie-card card">
       <div className="card__poster-wrapper">
-        {posterUrl ? posterImg : empty}
+        {posterPath ? posterImg : empty}
       </div>
       <div className="card__properties">
         <h3 className="card__title">{title}</h3>
