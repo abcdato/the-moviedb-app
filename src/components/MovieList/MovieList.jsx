@@ -142,13 +142,13 @@ function MovieList() {
       children: (
         <>
           <main className="main">
-            <ul className="movie-list list">
+            {/* <ul className="movie-list list">
               {spinner}
               {errorMsg}
               {content}
-            </ul>
+            </ul> */}
           </main>
-          <footer className="footer">{pagination}</footer>
+          {/* <footer className="footer">{pagination}</footer> */}
         </>
       ),
     },
