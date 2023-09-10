@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 import { Empty, Rate } from 'antd';
@@ -14,6 +15,8 @@ function MovieCard({
   genreList,
   vote,
 }) {
+  const [value, setValue] = useState(0);
+
   const truncate = (str, num, useWordBoundary) => {
     if (str.length <= num) {
       return str;
@@ -40,8 +43,28 @@ function MovieCard({
       width="185"
     />
   );
+
+  const ratingСolor = (num) => {
+    let color;
+
+    if (num <= 3) {
+      color = '#E90000';
+    } else if (num <= 5) {
+      color = '#E97E00';
+    } else if (num <= 7) {
+      color = '#E9D100';
+    } else if (num > 7) {
+      color = '#66E900';
+    }
+
+    return {
+      borderColor: color,
+    };
+  };
+
   const text = overview ? truncate(overview, 140, true) : null;
   const voteFixed = vote ? vote.toFixed(1) : null;
+  const rating = ratingСolor(voteFixed);
   const empty = <Empty description="Image Not Found" />;
 
   return (
@@ -51,7 +74,11 @@ function MovieCard({
       </div>
       <div className="card__properties">
         <h3 className="card__title">{title}</h3>
-        {voteFixed ? <div className="card__rating">{voteFixed}</div> : null}
+        {voteFixed ? (
+          <div className="card__rating" style={rating}>
+            {voteFixed}
+          </div>
+        ) : null}
         <div className="card__release-date">{date}</div>
         <div className="card__genres">
           {genreIds ? (
@@ -59,7 +86,7 @@ function MovieCard({
           ) : null}
         </div>
         <p className="card__overview">{text}</p>
-        <Rate allowHalf count={10} />
+        <Rate allowHalf count={10} value={value} onChange={setValue} />
       </div>
     </li>
   );
