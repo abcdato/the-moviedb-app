@@ -24,7 +24,9 @@ function MovieList() {
   const onInputChange = (event) => {
     setQuery(event.target.value);
     setCurrentPage(1);
-    setLoading(true);
+    if (event.target.value) {
+      setLoading(true);
+    }
   };
 
   const onError = (message) => {
