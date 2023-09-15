@@ -47,14 +47,21 @@ function MovieCard({
   const ratingСolor = (num) => {
     let color;
 
-    if (num <= 3) {
-      color = '#E90000';
-    } else if (num <= 5) {
-      color = '#E97E00';
-    } else if (num <= 7) {
-      color = '#E9D100';
-    } else if (num > 7) {
-      color = '#66E900';
+    switch (true) {
+      case num <= 3:
+        color = '#E90000';
+        break;
+      case num <= 5:
+        color = '#E97E00';
+        break;
+      case num <= 7:
+        color = '#E9D100';
+        break;
+      case num > 7:
+        color = '#66E900';
+        break;
+      default:
+        break;
     }
 
     return {
@@ -63,7 +70,7 @@ function MovieCard({
   };
 
   const text = overview ? truncate(overview, 140, true) : null;
-  const voteFixed = vote ? vote.toFixed(1) : null;
+  const voteFixed = vote ? vote.toFixed(1) : 0;
   const rating = ratingСolor(voteFixed);
   const empty = <Empty description="Image Not Found" />;
 
@@ -74,11 +81,9 @@ function MovieCard({
       </div>
       <div className="card__properties">
         <h3 className="card__title">{title}</h3>
-        {voteFixed ? (
-          <div className="card__rating" style={rating}>
-            {voteFixed}
-          </div>
-        ) : null}
+        <div className="card__rating" style={rating}>
+          {voteFixed}
+        </div>
         <div className="card__release-date">{date}</div>
         <div className="card__genres">
           {genreIds ? (

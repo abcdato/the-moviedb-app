@@ -108,7 +108,6 @@ function MovieList() {
         current={currentPage}
         pageSize={1}
         showSizeChanger={false}
-        // showQuickJumper
         onChange={onPageChange}
         total={totalPages}
       />
