@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Alert, Input, Pagination, Tabs, Spin } from 'antd';
+import { Alert, Input, Pagination, Spin } from 'antd';
 import { useDebounce } from '../../hooks/useDebounce';
 
-import MovieCard from '../MovieCard/MovieCard';
 import MovieService from '../../api/MovieService';
+import MovieCard from '../MovieCard/MovieCard';
 
-import './MovieList.scss';
-
-function MovieList() {
+function SearchTab() {
   const movieService = new MovieService();
 
   const [movies, setMovies] = useState([]);
@@ -29,7 +27,7 @@ function MovieList() {
     }
   };
 
-  const onError = (message) => {
+  const handleError = (message) => {
     setLoading(false);
     setError(true);
     setErrorMessage(message);
@@ -40,7 +38,7 @@ function MovieList() {
       const data = await movieService.getMovies(movie, page);
 
       if (movie && !data.totalResults) {
-        onError("Unfortunately we couldn't find any movies");
+        handleError("Unfortunately we couldn't find any movies");
       } else if (movie && data.totalResults) {
         setMovies(data.movies);
         setTotalPages(data.totalPages);
@@ -52,7 +50,7 @@ function MovieList() {
         setError(false);
       }
     } catch {
-      onError("Couldn't load the data.");
+      handleError("Couldn't load the data.");
     }
   }
 
@@ -113,49 +111,25 @@ function MovieList() {
       />
     ) : null;
 
-  const items = [
-    {
-      key: '1',
-      label: 'Search',
-      children: (
-        <>
-          <header className="header">
-            <Input
-              placeholder="Type to search..."
-              value={query}
-              onChange={onInputChange}
-            />
-          </header>
-          <main className="main">
-            <ul className="movie-list list">
-              {spinner}
-              {errorMsg}
-              {content}
-            </ul>
-          </main>
-          <footer className="footer">{pagination}</footer>
-        </>
-      ),
-    },
-    {
-      key: '2',
-      label: 'Rated',
-      children: (
-        <>
-          <main className="main">
-            {/* <ul className="movie-list list">
-              {spinner}
-              {errorMsg}
-              {content}
-            </ul> */}
-          </main>
-          {/* <footer className="footer">{pagination}</footer> */}
-        </>
-      ),
-    },
-  ];
-
-  return <Tabs centered defaultActiveKey="1" items={items} />;
+  return (
+    <>
+      <header className="header">
+        <Input
+          placeholder="Type to search..."
+          value={query}
+          onChange={onInputChange}
+        />
+      </header>
+      <main className="main">
+        <ul className="movie-list list">
+          {spinner}
+          {errorMsg}
+          {content}
+        </ul>
+      </main>
+      <footer className="footer">{pagination}</footer>
+    </>
+  );
 }
 
-export default MovieList;
+export default SearchTab;
