@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import { Alert, Input, Pagination, Tabs, Spin } from 'antd';
+import { createContext, useState } from 'react';
+import { Alert, Pagination, Spin } from 'antd';
 import { useDebounce } from '../../hooks/useDebounce';
-
-import MovieCard from '../MovieCard/MovieCard';
 import MovieService from '../../api/MovieService';
+import MovieCard from '../MovieCard/MovieCard';
 
-import './MovieList.scss';
+const DataContext = createContext();
 
-function MovieList() {
+// eslint-disable-next-line react/prop-types
+function DataProvider({ children }) {
   const movieService = new MovieService();
 
   const [movies, setMovies] = useState([]);
@@ -29,7 +29,7 @@ function MovieList() {
     }
   };
 
-  const onError = (message) => {
+  const handleError = (message) => {
     setLoading(false);
     setError(true);
     setErrorMessage(message);
@@ -40,7 +40,7 @@ function MovieList() {
       const data = await movieService.getMovies(movie, page);
 
       if (movie && !data.totalResults) {
-        onError("Unfortunately we couldn't find any movies");
+        handleError("Unfortunately we couldn't find any movies");
       } else if (movie && data.totalResults) {
         setMovies(data.movies);
         setTotalPages(data.totalPages);
@@ -52,7 +52,7 @@ function MovieList() {
         setError(false);
       }
     } catch {
-      onError("Couldn't load the data.");
+      handleError("Couldn't load the data.");
     }
   }
 
@@ -81,19 +81,12 @@ function MovieList() {
       );
     });
 
-  useEffect(() => {
-    async function getGenreName() {
-      const allGenres = movieService.getGenres();
-      const genres = await allGenres;
+  async function getGenreName() {
+    const allGenres = movieService.getGenres();
+    const genres = await allGenres;
 
-      setGenreList(genres.genres);
-    }
-    getGenreName();
-  }, []);
-
-  useEffect(() => {
-    loadData(debouncedQuery, currentPage);
-  }, [debouncedQuery, currentPage]);
+    setGenreList(genres.genres);
+  }
 
   const hasData = !(loading || error) && movies.length !== 0;
   const spinner = loading ? <Spin size="large" /> : null;
@@ -113,49 +106,29 @@ function MovieList() {
       />
     ) : null;
 
-  const items = [
-    {
-      key: '1',
-      label: 'Search',
-      children: (
-        <>
-          <header className="header">
-            <Input
-              placeholder="Type to search..."
-              value={query}
-              onChange={onInputChange}
-            />
-          </header>
-          <main className="main">
-            <ul className="movie-list list">
-              {spinner}
-              {errorMsg}
-              {content}
-            </ul>
-          </main>
-          <footer className="footer">{pagination}</footer>
-        </>
-      ),
-    },
-    {
-      key: '2',
-      label: 'Rated',
-      children: (
-        <>
-          <main className="main">
-            {/* <ul className="movie-list list">
-              {spinner}
-              {errorMsg}
-              {content}
-            </ul> */}
-          </main>
-          {/* <footer className="footer">{pagination}</footer> */}
-        </>
-      ),
-    },
-  ];
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
+  const value = {
+    setMovies,
+    setGenreList,
+    setTotalPages,
+    setQuery,
+    setCurrentPage,
+    setLoading,
+    setError,
+    setErrorMessage,
+    debouncedQuery,
+    onInputChange,
+    loadData,
+    onPageChange,
+    showMovies,
+    getGenreName,
+    spinner,
+    content,
+    errorMsg,
+    pagination,
+  };
 
-  return <Tabs centered defaultActiveKey="1" items={items} />;
+  return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }
 
-export default MovieList;
+export { DataProvider, DataContext };
