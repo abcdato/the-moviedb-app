@@ -81,7 +81,7 @@ function DataProvider({ children }) {
       );
     });
 
-  async function getGenreName() {
+  async function getGenres() {
     const allGenres = movieService.getGenres();
     const genres = await allGenres;
 
@@ -112,12 +112,14 @@ function DataProvider({ children }) {
     loadData,
     onPageChange,
     showMovies,
-    getGenreName,
+    getGenres,
+    query,
     debouncedQuery,
     spinner,
     content,
     errorMsg,
     pagination,
+    currentPage,
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
