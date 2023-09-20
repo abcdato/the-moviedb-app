@@ -4,7 +4,7 @@ import { DataContext } from '../Context/DataContext';
 
 function SearchTab() {
   const {
-    getGenreName,
+    getGenres,
     loadData,
     debouncedQuery,
     currentPage,
@@ -17,7 +17,7 @@ function SearchTab() {
   } = useContext(DataContext);
 
   useEffect(() => {
-    getGenreName();
+    getGenres();
   }, []);
 
   useEffect(() => {
