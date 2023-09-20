@@ -108,20 +108,12 @@ function DataProvider({ children }) {
 
   // eslint-disable-next-line react/jsx-no-constructed-context-values
   const value = {
-    setMovies,
-    setGenreList,
-    setTotalPages,
-    setQuery,
-    setCurrentPage,
-    setLoading,
-    setError,
-    setErrorMessage,
-    debouncedQuery,
     onInputChange,
     loadData,
     onPageChange,
     showMovies,
     getGenreName,
+    debouncedQuery,
     spinner,
     content,
     errorMsg,
