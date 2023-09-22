@@ -1,6 +1,9 @@
 // import React from 'react';
 
 function RatedTab() {
+  // идея для сохранения оцененного фильма в local storage
+  // const [rated, setRated] = useState([])
+
   //   const pagination =
   //     hasData && totalPages > 1 ? (
   //       <Pagination
@@ -15,11 +18,7 @@ function RatedTab() {
   return (
     <>
       <main className="main">
-        <ul className="movie-list list">
-          {/* {spinner}
-          {errorMsg}
-          {content} */}
-        </ul>
+        <ul className="movie-list list" />
       </main>
       {/* <footer className="footer">{pagination}</footer> */}
     </>

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { createContext, useState } from 'react';
 import { Alert, Pagination, Spin } from 'antd';
 import { useDebounce } from '../../hooks/useDebounce';
@@ -18,6 +19,10 @@ function DataProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const [ratedMovies, setRatedMovies] = useState([]);
+
+  console.log(ratedMovies);
 
   const debouncedQuery = useDebounce(query, 500);
 
@@ -64,12 +69,21 @@ function DataProvider({ children }) {
   const showMovies = (data) =>
     data &&
     data.map((movie) => {
-      const { id, title, releaseDate, overview, posterPath, genreIds, vote } =
-        movie;
+      const {
+        id,
+        title,
+        releaseDate,
+        overview,
+        posterPath,
+        genreIds,
+        vote,
+        voteCount,
+      } = movie;
 
       return (
         <MovieCard
           key={id}
+          id={id}
           title={title}
           releaseDate={releaseDate}
           overview={overview}
@@ -77,6 +91,7 @@ function DataProvider({ children }) {
           genreIds={genreIds}
           genreList={genreList}
           vote={vote}
+          voteCount={voteCount}
         />
       );
     });
@@ -113,6 +128,7 @@ function DataProvider({ children }) {
     onPageChange,
     showMovies,
     getGenres,
+    setRatedMovies,
     query,
     debouncedQuery,
     spinner,

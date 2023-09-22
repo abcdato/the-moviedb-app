@@ -39,6 +39,7 @@ class MoviesAPI {
       posterPath: item.poster_path,
       genreIds: item.genre_ids,
       vote: item.vote_average,
+      voteCount: item.vote_count,
     }));
 }
 export default MoviesAPI;

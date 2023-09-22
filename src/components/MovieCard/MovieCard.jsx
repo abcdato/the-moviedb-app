@@ -1,12 +1,16 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 import { Empty, Rate } from 'antd';
 
 import Genres from '../Genres/Genres';
+// eslint-disable-next-line import/no-cycle
+import { DataContext } from '../Context/DataContext';
+
 import './MovieCard.scss';
 
 function MovieCard({
+  id,
   title,
   releaseDate,
   overview,
@@ -14,8 +18,10 @@ function MovieCard({
   genreIds,
   genreList,
   vote,
+  voteCount,
 }) {
-  const [value, setValue] = useState(0);
+  // const [movieRating, setMovieRating] = useState(null);
+  const { setRatedMovies } = useContext(DataContext);
 
   const truncate = (str, num, useWordBoundary) => {
     if (str.length <= num) {
@@ -70,9 +76,26 @@ function MovieCard({
   };
 
   const text = overview ? truncate(overview, 140, true) : null;
-  const voteFixed = vote ? vote.toFixed(1) : 0;
-  const rating = ratingСolor(voteFixed);
+  const voteFixed = vote ? vote.toFixed(1) : null;
+  const rating = voteCount ? ratingСolor(voteFixed) : null;
   const empty = <Empty description="Image Not Found" />;
+
+  function rateMovie(i, v) {
+    const movie = {
+      id: i,
+      rating: v,
+      title,
+      releaseDate,
+      overview,
+      posterPath,
+      vote,
+      voteCount,
+    };
+
+    setRatedMovies((prevData) => [...prevData, movie]);
+
+    // console.log('id:', i, 'rating:', v);
+  }
 
   return (
     <li className="movie-card card">
@@ -91,7 +114,12 @@ function MovieCard({
           ) : null}
         </div>
         <p className="card__overview">{text}</p>
-        <Rate allowHalf count={10} value={value} onChange={setValue} />
+        <Rate
+          allowHalf
+          count={10}
+          // value={value}
+          onChange={(v) => rateMovie(id, v)}
+        />
       </div>
     </li>
   );
@@ -99,6 +127,7 @@ function MovieCard({
 
 MovieCard.defaultProps = {
   vote: null,
+  voteCount: null,
   posterPath: '',
   releaseDate: '',
   genreIds: [],
@@ -106,9 +135,11 @@ MovieCard.defaultProps = {
 };
 
 MovieCard.propTypes = {
+  id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   releaseDate: PropTypes.string,
   vote: PropTypes.number,
+  voteCount: PropTypes.number,
   overview: PropTypes.string.isRequired,
   posterPath: PropTypes.string,
   genreIds: PropTypes.instanceOf(Array),
