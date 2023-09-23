@@ -1,5 +1,5 @@
 /* eslint-disable import/no-cycle */
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { Alert, Pagination, Spin } from 'antd';
 import { useDebounce } from '../../hooks/useDebounce';
 import MovieService from '../../api/MovieService';
@@ -20,9 +20,13 @@ function DataProvider({ children }) {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const [ratedMovies, setRatedMovies] = useState([]);
+  const [ratedMovies, setRatedMovies] = useState(
+    () => JSON.parse(localStorage.getItem('ratedMovies')) || [],
+  );
 
-  console.log(ratedMovies);
+  useEffect(() => {
+    localStorage.setItem('ratedMovies', JSON.stringify(ratedMovies));
+  }, [ratedMovies]);
 
   const debouncedQuery = useDebounce(query, 500);
 
@@ -72,12 +76,14 @@ function DataProvider({ children }) {
       const {
         id,
         title,
+        star,
         releaseDate,
         overview,
         posterPath,
         genreIds,
         vote,
         voteCount,
+        disabledRate,
       } = movie;
 
       return (
@@ -85,6 +91,7 @@ function DataProvider({ children }) {
           key={id}
           id={id}
           title={title}
+          star={star}
           releaseDate={releaseDate}
           overview={overview}
           posterPath={posterPath}
@@ -92,6 +99,7 @@ function DataProvider({ children }) {
           genreList={genreList}
           vote={vote}
           voteCount={voteCount}
+          disabled={disabledRate}
         />
       );
     });
@@ -106,6 +114,7 @@ function DataProvider({ children }) {
   const hasData = !(loading || error) && movies.length !== 0;
   const spinner = loading ? <Spin size="large" /> : null;
   const content = hasData ? showMovies(movies) : null;
+  const ratedContent = showMovies(ratedMovies);
   const errorMsg = error ? (
     <Alert message="Error" description={errorMessage} type="warning" showIcon />
   ) : null;
@@ -133,6 +142,7 @@ function DataProvider({ children }) {
     debouncedQuery,
     spinner,
     content,
+    ratedContent,
     errorMsg,
     pagination,
     currentPage,

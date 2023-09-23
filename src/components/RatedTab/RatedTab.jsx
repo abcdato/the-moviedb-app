@@ -1,24 +1,16 @@
-// import React from 'react';
+import { useContext } from 'react';
+import { DataContext } from '../Context/DataContext';
 
 function RatedTab() {
-  // идея для сохранения оцененного фильма в local storage
-  // const [rated, setRated] = useState([])
-
-  //   const pagination =
-  //     hasData && totalPages > 1 ? (
-  //       <Pagination
-  //         current={currentPage}
-  //         pageSize={1}
-  //         showSizeChanger={false}
-  //         onChange={onPageChange}
-  //         total={totalPages}
-  //       />
-  //     ) : null;
+  const {
+    ratedContent,
+    // pagination,
+  } = useContext(DataContext);
 
   return (
     <>
       <main className="main">
-        <ul className="movie-list list" />
+        <ul className="movie-list list">{ratedContent}</ul>
       </main>
       {/* <footer className="footer">{pagination}</footer> */}
     </>

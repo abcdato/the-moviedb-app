@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
@@ -19,8 +20,9 @@ function MovieCard({
   genreList,
   vote,
   voteCount,
+  star,
+  disabled,
 }) {
-  // const [movieRating, setMovieRating] = useState(null);
   const { setRatedMovies } = useContext(DataContext);
 
   const truncate = (str, num, useWordBoundary) => {
@@ -83,18 +85,18 @@ function MovieCard({
   function rateMovie(i, v) {
     const movie = {
       id: i,
-      rating: v,
+      star: v,
       title,
       releaseDate,
       overview,
+      genreIds,
       posterPath,
       vote,
       voteCount,
+      disabledRate: true,
     };
-
+    console.log(v);
     setRatedMovies((prevData) => [...prevData, movie]);
-
-    // console.log('id:', i, 'rating:', v);
   }
 
   return (
@@ -117,7 +119,8 @@ function MovieCard({
         <Rate
           allowHalf
           count={10}
-          // value={value}
+          defaultValue={star}
+          disabled={disabled}
           onChange={(v) => rateMovie(id, v)}
         />
       </div>
