@@ -3,12 +3,9 @@ import { Tag } from 'antd';
 
 function Genres({ genreIds, genreList }) {
   return genreIds.map((id) =>
-    genreList.map((genre) => {
-      if (genre.id === id) {
-        return <Tag key={id}>{genre.name}</Tag>;
-      }
-      return '';
-    }),
+    genreList.map((genre) =>
+      genre.id === id ? <Tag key={id}>{genre.name}</Tag> : '',
+    ),
   );
 }
 
