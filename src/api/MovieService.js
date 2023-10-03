@@ -101,7 +101,7 @@ class MoviesAPI {
     return data;
   }
 
-  async getRatedMovie() {
+  async getRatedMovies() {
     const url = new URL(`${this.base}guest_session/${this.token}/rated/movies`);
     url.searchParams.set('api_key', this.key);
 
