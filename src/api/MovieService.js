@@ -24,6 +24,7 @@ class MoviesAPI {
       overview: item.overview,
       posterPath: item.poster_path,
       genreIds: item.genre_ids,
+      rating: item.rating,
       vote: item.vote_average,
       voteCount: item.vote_count,
     }));
@@ -35,7 +36,6 @@ class MoviesAPI {
     const data = await this.requestGet(url);
 
     const session = data.guest_session_id;
-    console.log(data, session);
     return session;
   }
 
@@ -106,8 +106,9 @@ class MoviesAPI {
     url.searchParams.set('api_key', this.key);
 
     const data = await this.requestGet(url);
+    const movies = this.transformData(data);
 
-    return data;
+    return movies;
   }
 }
 
