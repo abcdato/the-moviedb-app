@@ -1,12 +1,10 @@
 /* eslint-disable react/prop-types */
-import { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 import { Empty, Rate } from 'antd';
+import MovieService from '../../api/MovieService';
 
 import Genres from '../Genres/Genres';
-// eslint-disable-next-line import/no-cycle
-import { DataContext } from '../Context/DataContext';
 
 import './MovieCard.scss';
 
@@ -20,10 +18,9 @@ function MovieCard({
   genreList,
   vote,
   voteCount,
-  star,
-  disabled,
+  rating,
 }) {
-  const { setRatedMovies } = useContext(DataContext);
+  const movieService = new MovieService();
 
   const truncate = (str, num, useWordBoundary) => {
     if (str.length <= num) {
@@ -79,24 +76,15 @@ function MovieCard({
 
   const text = overview ? truncate(overview, 140, true) : null;
   const voteFixed = vote ? vote.toFixed(1) : null;
-  const rating = voteCount ? ratingСolor(voteFixed) : null;
+  const movieRating = voteCount ? ratingСolor(voteFixed) : null;
   const empty = <Empty description="Image Not Found" />;
 
-  function rateMovie(i, v) {
-    const movie = {
-      id: i,
-      star: v,
-      title,
-      releaseDate,
-      overview,
-      genreIds,
-      posterPath,
-      vote,
-      voteCount,
-      disabledRate: true,
-    };
-    console.log(v);
-    setRatedMovies((prevData) => [...prevData, movie]);
+  function rateMovie(s) {
+    if (s === 0) {
+      movieService.deleteRatedMovie(id);
+    } else {
+      movieService.rateMovie(id, s);
+    }
   }
 
   return (
@@ -106,7 +94,7 @@ function MovieCard({
       </div>
       <div className="card__properties">
         <h3 className="card__title">{title}</h3>
-        <div className="card__rating" style={rating}>
+        <div className="card__rating" style={movieRating}>
           {voteFixed}
         </div>
         <div className="card__release-date">{date}</div>
@@ -119,9 +107,8 @@ function MovieCard({
         <Rate
           allowHalf
           count={10}
-          defaultValue={star}
-          disabled={disabled}
-          onChange={(v) => rateMovie(id, v)}
+          defaultValue={rating}
+          onChange={(v) => rateMovie(v)}
         />
       </div>
     </li>
@@ -138,7 +125,6 @@ MovieCard.defaultProps = {
 };
 
 MovieCard.propTypes = {
-  id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   releaseDate: PropTypes.string,
   vote: PropTypes.number,
