@@ -101,14 +101,17 @@ class MoviesAPI {
     return data;
   }
 
-  async getRatedMovies() {
+  async getRatedMovies(page) {
     const url = new URL(`${this.base}guest_session/${this.token}/rated/movies`);
     url.searchParams.set('api_key', this.key);
+    url.searchParams.set('page', page);
 
     const data = await this.requestGet(url);
     const movies = this.transformData(data);
+    const totalPages = data.total_pages;
+    const totalResults = data.total_results;
 
-    return movies;
+    return { movies, totalPages, totalResults };
   }
 }
 
