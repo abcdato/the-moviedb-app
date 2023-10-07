@@ -2,8 +2,8 @@
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 import { Empty, Rate } from 'antd';
-import MovieService from '../../api/MovieService';
 
+import MovieService from '../../api/MovieService';
 import Genres from '../Genres/Genres';
 
 import './MovieCard.scss';
