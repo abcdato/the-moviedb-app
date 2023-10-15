@@ -17,6 +17,8 @@ function DataProvider({ children }) {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
+  const [ratedMovies, setRatedMovies] = useState([]);
+
   const handleError = (message) => {
     setLoading(false);
     setError(true);
@@ -57,6 +59,18 @@ function DataProvider({ children }) {
       );
     });
 
+  async function loadRatedData(page = 1) {
+    try {
+      const data = movieService.getRatedMovies(page);
+      const rated = await data;
+
+      setRatedMovies(rated.movies);
+      setLoading(false);
+    } catch {
+      handleError("Couldn't load the data.");
+    }
+  }
+
   async function getGenres() {
     const allGenres = movieService.getGenres();
     const genres = await allGenres;
@@ -69,16 +83,20 @@ function DataProvider({ children }) {
     <Alert message="Error" description={errorMessage} type="warning" showIcon />
   ) : null;
 
+  const ratedContent = showMovies(ratedMovies);
+
   const value = {
     showMovies,
     getGenres,
     setLoading,
     handleError,
     setError,
+    loadRatedData,
     loading,
     spinner,
     error,
     errorMsg,
+    ratedContent,
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
