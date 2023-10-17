@@ -18,6 +18,7 @@ function DataProvider({ children }) {
   const [errorMessage, setErrorMessage] = useState('');
 
   const [ratedMovies, setRatedMovies] = useState([]);
+  const [totalRatedPages, setTotalRatedPages] = useState(null);
 
   const handleError = (message) => {
     setLoading(false);
@@ -64,8 +65,18 @@ function DataProvider({ children }) {
       const data = movieService.getRatedMovies(page);
       const rated = await data;
 
-      setRatedMovies(rated.movies);
-      setLoading(false);
+      if (!rated.totalResults) {
+        handleError("Unfortunately we couldn't find any movies");
+      } else if (rated.totalResults) {
+        setRatedMovies(rated.movies);
+        setTotalRatedPages(rated.totalPages);
+        setLoading(false);
+        setError(false);
+      } else if (!rated) {
+        setRatedMovies([]);
+        setLoading(false);
+        setError(false);
+      }
     } catch {
       handleError("Couldn't load the data.");
     }
@@ -97,6 +108,7 @@ function DataProvider({ children }) {
     error,
     errorMsg,
     ratedContent,
+    totalRatedPages,
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
