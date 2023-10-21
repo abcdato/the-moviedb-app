@@ -49,6 +49,14 @@ function MovieCard({
     />
   );
 
+  function rateMovie(s) {
+    if (s === 0) {
+      movieService.deleteRatedMovie(id);
+    } else {
+      movieService.rateMovie(id, s);
+    }
+  }
+
   const ratingСolor = (num) => {
     let color;
 
@@ -78,14 +86,6 @@ function MovieCard({
   const voteFixed = vote ? vote.toFixed(1) : null;
   const movieRating = voteCount ? ratingСolor(voteFixed) : null;
   const empty = <Empty description="Image Not Found" />;
-
-  function rateMovie(s) {
-    if (s === 0) {
-      movieService.deleteRatedMovie(id);
-    } else {
-      movieService.rateMovie(id, s);
-    }
-  }
 
   return (
     <li className="movie-card card">
