@@ -1,6 +1,4 @@
-import { useContext } from 'react';
 import { Tabs } from 'antd';
-import { DataContext } from '../Context/DataContext';
 
 import SearchTab from '../SearchTab/SearchTab';
 import RatedTab from '../RatedTab/RatedTab';
@@ -8,15 +6,6 @@ import RatedTab from '../RatedTab/RatedTab';
 import './TabsView.scss';
 
 function TabsView() {
-  const { loadRatedData, setLoading } = useContext(DataContext);
-
-  const onTabClick = (key) => {
-    if (key === '2') {
-      setLoading(true);
-      loadRatedData();
-    }
-  };
-
   const items = [
     {
       key: '1',
@@ -30,9 +19,7 @@ function TabsView() {
     },
   ];
 
-  return (
-    <Tabs centered defaultActiveKey="1" items={items} onTabClick={onTabClick} />
-  );
+  return <Tabs centered defaultActiveKey="1" items={items} />;
 }
 
 export default TabsView;
